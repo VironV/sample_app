@@ -5,4 +5,15 @@ FactoryGirl.define do
     password "foobar"
     password_confirmation "foobar"
   end
+
+  factory :film do
+    title "Today or Tomorrow"
+    director  "Adam Smith"
+    year "1995"
+  end
+
+  factory :tag do
+    title "Comedy"
+    description "It's funny"
+  end
 end

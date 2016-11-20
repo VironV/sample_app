@@ -9,6 +9,10 @@ class User < ActiveRecord::Base
   has_secure_password
   validates :password, length: { minimum: 6 }
 
+  has_many :preferences, foreign_key: "fan_id", dependent: :destroy
+  has_many :users_tags, foreign_key: "user_id", dependent: :destroy
+  has_many :ratings, foreign_key: "user_id", dependent: :destroy
+
   def User.new_remember_token
     SecureRandom.urlsafe_base64
   end

@@ -10,4 +10,8 @@ class StaticPagesController < ApplicationController
 
   def contact
   end
+
+  def films_list
+    @films=Film.all()
+  end
 end
