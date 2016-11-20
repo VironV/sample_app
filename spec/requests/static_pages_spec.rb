@@ -5,6 +5,8 @@ require 'support/utilities'
 describe "Static pages" do
 
   let(:base_title) { "Ruby on Rails Tutorial Sample App" }
+  let(:film) {FactoryGirl.create(:film)}
+  let(:user) {FactoryGirl.create(:user)}
 
   subject { page }
 
@@ -14,18 +16,39 @@ describe "Static pages" do
   end
 
   describe "Home page" do
-    before { visit root_path }
-    let(:heading) {'Sample App'}
-    let(:page_title) {''}
+    describe "when not sined in" do
+      before { visit root_path }
+      let(:heading) {'Sample App'}
+      let(:page_title) {''}
 
-    it_should_behave_like "all static pages"
-    it { should_not have_title('| Home') }
+      it_should_behave_like "all static pages"
+      it { should_not have_title('| Home') }
+    end
+
+    describe "when signed in" do
+      before do
+        visit signin_path
+        fill_in "Email",        with: user.email
+        fill_in "Password",     with: "foobar"
+        click_button "Sign in"
+      end
+      it "shoud redirect to user page" do
+        expect(page).to have_title(full_title(user.name))
+      end
+    end
   end
 
   describe "Help page" do
     before { visit help_path }
     let(:heading) {'Help'}
     let(:page_title) {'Help'}
+    it_should_behave_like "all static pages"
+
+  end
+
+  describe "Films list page" do
+    before {visit films_list_path}
+
   end
 
   describe "About page" do
@@ -44,6 +67,8 @@ describe "Static pages" do
     visit root_path
     click_link "About"
     expect(page).to have_title(full_title('About Us'))
+    click_link "Films"
+    expect(page).to have_title(full_title('Films list'))
     click_link "Help"
     expect(page).to have_title(full_title('Help'))
     click_link "Contact"
