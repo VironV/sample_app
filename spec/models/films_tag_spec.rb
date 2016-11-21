@@ -30,4 +30,13 @@ RSpec.describe Films_tag, type: :model do
     before {subject.tag_id=nil}
     it {should_not be_valid}
   end
+
+  describe "when same films tag already exits" do
+    before do
+      same_films_tag=subject.dup
+      same_films_tag.save
+    end
+
+    it {should_not be_valid}
+  end
 end

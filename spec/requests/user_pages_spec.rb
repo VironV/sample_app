@@ -74,11 +74,10 @@ describe "User pages" do
       it { should have_link('change', href: 'http://gravatar.com/emails') }
     end
 
-    #Here is some problem
     #describe "with invalid information" do
     #  before { click_button "Save changes" }
 
-    #  it { should have_content('error') }
+      #it { should have_selector('div.alert.alert-error', text: 'Error') }
     #end
   end
 end

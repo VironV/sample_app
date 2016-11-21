@@ -8,7 +8,14 @@
     </section>
   </aside>
   <div class="span6">
-    <h2> Test text</h2>
+    <% if signed_in? %>
+      <%= form_for(@rating) do |f| %>
+          <%= hidden_field_tag "user_id", @user.id%>
+          <%= hidden_field_tag "film_id", @film.id%>
+          <%= select_tag(:value, options_for_select([['--',0],['1',1],['2',2],['3',3],['4',4],['5',5],['6',6],['7',7],['8',8],['9',9],['10',10]])) %>
+          <%= f.submit "Rate this film!", class: "btn btn-medium btn-primary" %>
+      <% end %>
+    <%end%>
   </div>
 </div>
 

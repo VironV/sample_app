@@ -38,4 +38,13 @@ RSpec.describe Users_tag, type: :model do
     before {subject.count=nil}
     it {should_not be_valid}
   end
+
+  describe "when same users tag already exits" do
+    before do
+      same_users_tag=subject.dup
+      same_users_tag.save
+    end
+
+    it {should_not be_valid}
+  end
 end

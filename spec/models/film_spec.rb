@@ -31,14 +31,13 @@ RSpec.describe Film, type: :model do
     it {should_not be_valid}
   end
 
-  #doesn't work
-  #describe "when same film already exits" do
-  #  before do
-  #    same_film=@film.dup
-  #    same_film.save
-  #  end
+  describe "when same film already exits" do
+    before do
+      same_film=@film.dup
+      same_film.save
+    end
 
-  #  it {should_not be_valid}
-  #end
+    it {should_not be_valid}
+  end
 
 end

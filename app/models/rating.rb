@@ -4,4 +4,5 @@ class Rating < ActiveRecord::Base
   validates :film_id, presence:true
   validates :user_id, presence:true
   validates :value, presence:true, :inclusion => 1..10
+  validates_uniqueness_of :film_id, :scope => [:user_id]
 end

@@ -19,4 +19,13 @@ RSpec.describe Tag, type: :model do
     it {should_not be_valid}
   end
 
+  describe "when same tag already exits" do
+    before do
+      same_tag=subject.dup
+      same_tag.save
+    end
+
+    it {should_not be_valid}
+  end
+
 end

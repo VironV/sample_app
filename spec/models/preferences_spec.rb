@@ -29,4 +29,13 @@ RSpec.describe Preference, type: :model do
     before {@preference.favfilm_id=nil}
     it {should_not be_valid}
   end
+
+  describe "when same preference already exits" do
+    before do
+      same_preference=subject.dup
+      same_preference.save
+    end
+
+    it {should_not be_valid}
+  end
 end

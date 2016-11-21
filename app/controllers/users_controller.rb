@@ -14,6 +14,7 @@ class UsersController < ApplicationController
       flash[:success] = "Welcome to the Sample App!"
       redirect_to @user
     else
+      flash[:error] = "Error"
       render 'new'
     end
   end
@@ -23,7 +24,7 @@ class UsersController < ApplicationController
     if @user.save
       redirect_to @user
     else
-      flash[:error] = "error"
+      flash[:error] = "Error"
     end
   end
 

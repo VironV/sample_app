@@ -50,4 +50,13 @@ RSpec.describe Rating, type: :model do
       it {should_not be_valid}
     end
   end
+
+  describe "when same rating already exits" do
+    before do
+      same_rating=subject.dup
+      same_rating.save
+    end
+
+    it {should_not be_valid}
+  end
 end
