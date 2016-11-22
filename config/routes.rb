@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :films
   resources :sessions, only: [:new, :create, :destroy]
   resources :ratings
+  resources :preferences
 
   root  'static_pages#home'
   match '/signup',  to: 'users#new',            via: 'get'

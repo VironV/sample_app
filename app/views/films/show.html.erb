@@ -7,16 +7,32 @@
       <h2>Year: <%= @film.year %></h2>
     </section>
   </aside>
-  <div class="span6">
+  <div class="span4">
     <% if signed_in? %>
-      <%= form_for(@rating) do |f| %>
+      <%= form_for @rating, method: :create do |f| %>
           <%= hidden_field_tag "user_id", @user.id%>
           <%= hidden_field_tag "film_id", @film.id%>
-          <%= select_tag(:value, options_for_select([['--',0],['1',1],['2',2],['3',3],['4',4],['5',5],['6',6],['7',7],['8',8],['9',9],['10',10]])) %>
-          <%= f.submit "Rate this film!", class: "btn btn-medium btn-primary" %>
+          <%= f.select :value, options_for_select([['--',0],['1',1],['2',2],['3',3],['4',4],['5',5],['6',6],['7',7],['8',8],['9',9],['10',10]]) %>
+          <%= f.submit "Rate this film", class: "bt selecmedium btn-primary" %>
       <% end %>
     <%end%>
   </div>
-</div>
+  <div class="span4">
+  <% if signed_in? %>
+      <% if Preference.find_by_fan_id_and_favfilm_id(current_user.id,@film.id)%>
+          <%= form_for @preference, method: :delete do |f| %>
+              <%= hidden_field_tag "user_id", @user.id%>
+              <%= hidden_field_tag "film_id", @film.id%>
+              <%= f.submit "Remove from favourites", class: "bt selecmedium btn-primary" %>
+          <% end %>
+      <% else %>
+          <%= form_for @preference, method: :create do |f| %>
+              <%= hidden_field_tag "user_id", @user.id%>
+              <%= hidden_field_tag "film_id", @film.id%>
+              <%= f.submit "Make this film favourite", class: "bt selecmedium btn-primary" %>
+          <% end %>
+      <%end%>
+  <%end%>
+  </div>
 
 </div>
