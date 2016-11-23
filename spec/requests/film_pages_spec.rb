@@ -17,7 +17,7 @@ describe "Film pages" do
     visit film_path(film.id)
   end
 
-  describe "Adding film to favourites" do
+  describe "adding film to favourites" do
     before {click_button "Make this film favourite"}
 
     let(:preference) {Preference.find_by_fan_id_and_favfilm_id(user.id,film.id)}
@@ -40,7 +40,9 @@ describe "Film pages" do
 
 
 
-  describe "User rates film" do
+  describe "user rates film" do
+    it {expect(page).to have_content("You didn't rate this film yet")}
+
     describe "Correctly" do
       before do
         select '8', from: "rating_value"
@@ -49,6 +51,7 @@ describe "Film pages" do
       let(:rating) { Rating.find_by_film_id_and_user_id(film.id,user.id) }
       it { should have_selector('div.alert.alert-success') }
       it {expect(rating.value).to eq(8)}
+      it {expect(page).to have_content("Your rating: 8")}
     end
 
     describe "with wrong value" do
@@ -71,6 +74,36 @@ describe "Film pages" do
       let(:rating) { Rating.find_by_film_id_and_user_id(film.id,user.id) }
       it { should have_selector('div.alert.alert-success') }
       it {expect(rating.value).to eq(9)}
+    end
+  end
+
+  describe "average rating" do
+    describe "without any ratings" do
+      it {expect(page).to have_content("This film hasn't any ratings yet")}
+    end
+
+    describe "with one rating" do
+      before do
+        select '8', from: "rating_value"
+        click_button "Rate this film"
+      end
+      it {expect(page).to have_content("Average rating: 8")}
+    end
+
+    describe "with two or more ratings" do
+      let(:user2) {FactoryGirl.create(:user)}
+      before do
+        select '8', from: "rating_value"
+        click_button "Rate this film"
+
+        rating2=Rating.new()
+        rating2.user_id=user2.id
+        rating2.film_id=film.id
+        rating2.value=7
+        rating2.save
+        visit film_path(film.id)
+      end
+      it {expect(page).to have_content("Average rating: 7.5")}
     end
   end
 end

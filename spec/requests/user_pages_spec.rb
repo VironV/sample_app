@@ -13,6 +13,40 @@ describe "User pages" do
 
     it { should have_content(user.name) }
     it { should have_title(user.name) }
+
+
+  end
+
+  describe "favourite films list" do
+    let(:film1) {FactoryGirl.create(:film)}
+    let(:film2) {FactoryGirl.create(:film)}
+    let(:user) { FactoryGirl.create(:user) }
+    before { visit user_path(user) }
+
+    describe "empty" do
+      it {expect(page).to have_content("Favourite films")}
+      it {expect(page).to have_content("No films in the list yet")}
+    end
+
+    describe "with some films" do
+      before do
+        pref1=Preference.new()
+        pref1.fan_id=user.id
+        pref1.favfilm_id=film1.id
+
+        pref2=Preference.new()
+        pref2.fan_id=user.id
+        pref2.favfilm_id=film2.id
+
+        pref1.save()
+        pref2.save()
+
+        visit user_path(user)
+      end
+
+      it {expect(page).to have_content(film1.title)}
+      it {expect(page).to have_content(film2.title)}
+    end
   end
 
   describe "signup page" do

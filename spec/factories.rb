@@ -1,15 +1,16 @@
 FactoryGirl.define do
-  factory :user do
-    name     "Michael Hartl"
-    email    "michael@example.com"
-    password "foobar"
-    password_confirmation "foobar"
+
+  factory :user do |u|
+    u.sequence(:name) {|n| "Name#{n}"}
+    u.sequence(:email) {|n| "name#{n}@email.com"}
+    u.password "foobar"
+    u.password_confirmation "foobar"
   end
 
-  factory :film do
-    title "Today or Tomorrow"
-    director  "Adam Smith"
-    year "1995"
+  factory :film do |f|
+    f.sequence(:title) {|n| "Today or Tomorrow part#{n}"}
+    f.director  "Adam Smith"
+    f.year "1995"
   end
 
   factory :tag do

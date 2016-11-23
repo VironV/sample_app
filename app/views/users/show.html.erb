@@ -8,15 +8,22 @@
       </h1>
     </section>
   </aside>
-  <div class="span6">
-    <h2> Test text</h2>
+  <div class="span4">
+    <h3>Favourite films</h3>
+    <% if @films_list==[] %>
+      <h5>-No films in the list yet</h5>
+    <% else%>
+        <ol>
+        <% @films_list.each do |film| %>
+          <li><%= link_to film.title, film_path(film.id) %></li>
+        <%end%>
+        </ol>
+    <%end%>
   </div>
 </div>
 <div class="row">
   <div class="span6">
-    <h1>Test1</h1>
   </div>
   <div class="span6">
-    <h1>Test2</h1>
   </div>
 </div>

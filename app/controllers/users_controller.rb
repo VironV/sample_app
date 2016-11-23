@@ -1,6 +1,11 @@
 class UsersController < ApplicationController
   def show
     @user=User.find(params[:id])
+    pref_list=Preference.where(fan_id: @user.id)
+    @films_list=[]
+    pref_list.each do |pref|
+      @films_list << Film.find(pref.favfilm_id)
+    end
   end
 
   def new
