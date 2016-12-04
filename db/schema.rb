@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161121181920) do
+ActiveRecord::Schema.define(version: 20161204170209) do
+
+  create_table "factors", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "film_factors", force: :cascade do |t|
+    t.integer "film_id"
+    t.integer "factor_id"
+    t.decimal "value",     precision: 20, scale: 10
+  end
+
+  add_index "film_factors", ["factor_id"], name: "index_film_factors_on_factor_id"
+  add_index "film_factors", ["film_id"], name: "index_film_factors_on_film_id"
 
   create_table "films", force: :cascade do |t|
     t.string   "title"
@@ -57,6 +70,13 @@ ActiveRecord::Schema.define(version: 20161121181920) do
   add_index "ratings", ["film_id"], name: "index_ratings_on_film_id"
   add_index "ratings", ["user_id"], name: "index_ratings_on_user_id"
 
+  create_table "svd_params", force: :cascade do |t|
+    t.string  "name"
+    t.decimal "value", precision: 20, scale: 10
+  end
+
+  add_index "svd_params", ["name"], name: "index_svd_params_on_name"
+
   create_table "tags", force: :cascade do |t|
     t.string   "title"
     t.string   "description"
@@ -65,6 +85,15 @@ ActiveRecord::Schema.define(version: 20161121181920) do
   end
 
   add_index "tags", ["title"], name: "index_tags_on_title"
+
+  create_table "user_factors", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "factor_id"
+    t.decimal "value",     precision: 20, scale: 10
+  end
+
+  add_index "user_factors", ["factor_id"], name: "index_user_factors_on_factor_id"
+  add_index "user_factors", ["user_id"], name: "index_user_factors_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "name"

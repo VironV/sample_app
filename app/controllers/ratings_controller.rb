@@ -3,6 +3,7 @@ class RatingsController < ApplicationController
   end
 
   def new
+
   end
 
   def create

@@ -17,4 +17,8 @@ FactoryGirl.define do
     title "Comedy"
     description "It's funny"
   end
+
+  factory :factor do
+    name "factor 1"
+  end
 end

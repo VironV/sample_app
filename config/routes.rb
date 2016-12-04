@@ -6,13 +6,16 @@ Rails.application.routes.draw do
   resources :preferences
 
   root  'static_pages#home'
-  match '/signup',  to: 'users#new',            via: 'get'
-  match '/signin',  to: 'sessions#new',         via: 'get'
-  match '/signout', to: 'sessions#destroy',     via: 'delete'
-  match '/help',    to: 'static_pages#help',    via: 'get'
-  match '/films_list',   to: 'static_pages#films_list', via: 'get'
-  match '/about',   to: 'static_pages#about',   via: 'get'
-  match '/contact', to: 'static_pages#contact', via: 'get'
+  match '/signup',          to: 'users#new',                via: 'get'
+  match '/signin',          to: 'sessions#new',             via: 'get'
+  match '/signout',         to: 'sessions#destroy',         via: 'delete'
+  match '/help',            to: 'static_pages#help',        via: 'get'
+  match '/films',           to: 'static_pages#films_list',  via: 'get'
+  match '/films_list',      to: 'static_pages#films_list',  via: 'get'
+  match '/about',           to: 'static_pages#about',       via: 'get'
+  match '/contact',         to: 'static_pages#contact',     via: 'get'
+  match '/recommend',       to: 'recommender_system#show',  via: 'get', as:'recommend'
+  match '/recommend/result', to: 'recommender_system#show_results', via: 'get', as: 'show_results'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

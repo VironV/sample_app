@@ -4,6 +4,7 @@ class Film < ActiveRecord::Base
   validates :year,  presence: true
   validates_uniqueness_of :title, :scope => [:director,:year]
 
+
   has_many :preferences, foreign_key: "favfilm_id", dependent: :destroy
   has_many :films_tags, foreign_key: "film_id", dependent: :destroy
   has_many :ratings, foreign_key: "film_is", dependent: :destroy

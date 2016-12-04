@@ -1,0 +1,36 @@
+<% provide(:title, "Recommendation results") %>
+<h2>Results!</h2>
+<div>
+  <ol>
+  <% @user_vectors.each do |user_vector| %>
+    <li>
+      <%user_vector.each do |value| %>
+        <%=Float(value)%>,
+      <% end%>
+    </li>
+  <% end %>
+  </ol>
+</div>
+
+<div>
+  <ol>
+    <% @film_vectors.each do |film_vector| %>
+        <li>
+          <%film_vector.each do |value| %>
+              <%=Float(value)%>,
+          <% end%>
+        </li>
+    <% end %>
+  </ol>
+</div>
+
+
+<div>
+  <ol>
+    <% @SVD_params.each do |param| %>
+        <li>
+          <%= param.name %>: <%= Float(param.value)%>
+        </li>
+    <% end %>
+  </ol>
+</div>
