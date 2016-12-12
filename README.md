@@ -1,5 +1,3 @@
-# Перевод Ruby on Rails Tutorial: пример приложения
+# README
 
-Это пример приложения для
-[*Ruby on Rails Tutorial*](http://railstutorial.org/)
-by [Майкл Хартл](http://michaelhartl.com/).
+Simple recommendation system based on SVD++ algorithm
