@@ -20,8 +20,36 @@ class RecommenderSystemController < ApplicationController
 
   end
 
-  def show_recommended_films(user)
-    #rnd_unrate_films = User.
+  def show_recommended_films
+    user=current_user
+
+    rated_films=User.rated_films(user.id)
+    rated_films_id=[]
+    rated_films.each do |rated_film|
+      rated_films_id.push(rated_film.film_id)
+    end
+
+    unrated_films=Film.where.not(id: rated_films_id)
+    unrated_films_id=[]
+    unrated_films.each do |unrated_film|
+      unrated_films_id.push(unrated_film.id)
+    end
+
+    #rated_films_id.each do |i|
+    #  puts("Rated films: " + i.to_s)
+    #end
+
+    unrated_films_h={}
+    Film.all.each do |film|
+      if unrated_films_id.include?(film.id)
+        rating=predict_rating(user,film)
+        temp={film.title => rating}
+        unrated_films_h.merge!(temp)
+      end
+    end
+    @unrated_films=unrated_films_h.sort_by {|_key, value| value}
+
+
   end
 
   def show_results
@@ -126,6 +154,9 @@ class RecommenderSystemController < ApplicationController
       end
 
       rmse=rmse/ratings_count
+
+      log_write_rmse(rmse,rmse_old)
+
       if (rmse - rmse_old).abs < threshold
         learn_rate*=0.66
         threshold=threshold*0.5
@@ -179,7 +210,7 @@ class RecommenderSystemController < ApplicationController
   #
   #Init part
   #
-  def init_params(learning_rate=0.1,f_regulator=0.001, f_amount=2, f_default=0.1,max_iterations=50)
+  def init_params(learning_rate=0.1,f_regulator=0.015, f_amount=2, f_default=0.1,max_iterations=100)
     change_param(@learning_rate_str,learning_rate)
     change_param(@f_regulator_str,f_regulator)
     change_param(@f_amoun_str,f_amount)
@@ -364,6 +395,13 @@ class RecommenderSystemController < ApplicationController
     file.write("\nOLD film " + film_id.to_s + " factor id " + f_id.to_s + " value " + film_f_old.to_s)
     file.write("\nuser " + user_id.to_s + " factor id " + f_id.to_s + " value " + user_f.value.to_s)
     file.write("\nfilm " + film_id.to_s + " factor id " + f_id.to_s + " value " + film_f.value.to_s)
+    file.close
+  end
+
+  def log_write_rmse(rmse,rmse_old)
+    file=File.open("logs.txt", "a")
+    file.write("\nRMSE OLD " + rmse_old.to_s)
+    file.write("\nRMSE NEW: " + rmse.to_s)
     file.close
   end
 

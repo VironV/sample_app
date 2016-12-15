@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   match '/contact',         to: 'static_pages#contact',     via: 'get'
   match '/recommend',       to: 'recommender_system#show_choice',  via: 'get', as:'recommender_choice'
   match '/recommend/result', to: 'recommender_system#show_results', via: 'get', as: 'show_calculations_results'
-  match '/recommend/show_films', to: 'recommender_system#show_results', via: 'get', as: 'recommended_films_path'
+  match '/recommend/show_films', to: 'recommender_system#show_recommended_films', via: 'get', as: 'recommended_films'
   match '/recommend/calculate_result', to: 'recommender_system#calculate_and_show_results', via: 'get', as: 'calculate_and_show_results'
 
   # The priority is based upon order of creation: first created -> highest priority.

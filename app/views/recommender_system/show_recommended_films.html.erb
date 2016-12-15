@@ -1,0 +1,11 @@
+<% provide(:title, 'Recommended films') %>
+<h2>Here is your best recommendations!</h2>
+<div>
+  <ol>
+    <% @unrated_films.each do |film_and_rating| %>
+        <li>
+          <%=film_and_rating[0]%>: <%=film_and_rating[1]%>
+        </li>
+    <% end %>
+  </ol>
+</div>

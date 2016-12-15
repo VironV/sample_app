@@ -1,7 +1,9 @@
-<% provide(:title, "Recommendation") %>
+<% provide(:title, 'Choose recommendation action') %>
 
 <div class="span5"></div>
 <div class="span2">
-  <%= link_to '<button type="button" class="bt seleclarge btn-primary">Show results!</button>'.html_safe, calculate_and_show_results_path %>
+  <%= link_to '<button type="button" class="bt seleclarge btn-primary">Calculate and show</button>'.html_safe, calculate_and_show_results_path %>
+  <%= link_to '<button type="button" class="bt seleclarge btn-primary">Show results!</button>'.html_safe, show_calculations_results_path %>
+  <%= link_to '<button type="button" class="bt seleclarge btn-primary">Recommend unrated films!</button>'.html_safe, recommended_films_path %>
 </div>
 <h2>Here is text that explaining to you stuff</h2>
