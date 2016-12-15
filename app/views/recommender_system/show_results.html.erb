@@ -1,17 +1,21 @@
 <% provide(:title, "Recommendation results") %>
 <h2>Results!</h2>
+<h2>Users!</h2>
 <div>
   <ol>
-  <% @user_vectors.each do |user_vector| %>
+  <% 0.upto(@users.count-1) do |i| %>
     <li>
-      <%user_vector.each do |value| %>
-        <%=Float(value)%>,
+      <%=@users[i]%>
+      <%@user_vectors[i].each do |value| %>
+        <%=Float(value).round(4)%>,
       <% end%>
     </li>
   <% end %>
   </ol>
 </div>
 
+
+<h2>Films!</h2>
 <div>
   <ol>
     <% @film_vectors.each do |film_vector| %>

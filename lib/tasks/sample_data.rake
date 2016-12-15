@@ -3,10 +3,10 @@ require 'faker'
 namespace :db do
   desc "Fill database with sample data"
   task populate: :environment do
-    make_users
+    #make_users
     make_films
-    make_ratings
-    make_preferenecs
+    #make_ratings
+    #make_preferenecs
   end
 end
 
@@ -22,7 +22,7 @@ def make_users
 end
 
 def make_films
-  50.times do |n|
+  5.times do |n|
     title = Faker::Book.title
     director = Faker::Name.name
     year = 2000
