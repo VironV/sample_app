@@ -5,7 +5,7 @@
       <nav>
         <ul class="nav pull-right">
           <% if signed_in? %>
-              <li><%= link_to "Recommend me!", recommend_path %></li>
+              <li><%= link_to "Recommend me!", recommender_choice_path %></li>
           <%end%>
           <li><%= link_to "Home", root_path %></li>
           <li><%= link_to "Films", films_list_path %></li>
