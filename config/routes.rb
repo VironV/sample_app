@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   match '/recommend/result', to: 'recommender_system#show_results', via: 'get', as: 'show_calculations_results'
   match '/recommend/show_films', to: 'recommender_system#show_recommended_films', via: 'get', as: 'recommended_films'
   match '/recommend/calculate_result', to: 'recommender_system#calculate_and_show_results', via: 'get', as: 'calculate_and_show_results'
+  match 'recommend/5_5_example', to: 'recommender_system#create_5_5_example', via: 'get', as: 'create_5_5_example'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

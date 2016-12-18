@@ -405,5 +405,79 @@ class RecommenderSystemController < ApplicationController
     file.close
   end
 
+  def clear_all_data
+    Film_factor.all.each do |factor|
+      factor.destroy
+    end
+    User_factor.all.each do |factor|
+      factor.destroy
+    end
+    Films_tag.all.each do |tag|
+      tag.destroy
+    end
+    Users_tag.all.each do |tag|
+      tag.destroy
+    end
+    Preference.all.each do |pref|
+      pref.destroy
+    end
+    Rating.all.each do |rating|
+      rating.destroy
+    end
+    Film.all.each do |film|
+      film.destroy
+    end
+    User.all.each do |user|
+      user.destroy
+    end
+
+  end
+
+  def create_5_5_example
+    if signed_in?
+      sign_out
+    end
+    clear_all_data
+    a=User.create(name: "Mary",email:"mary@email.com",password:"foobar",password_confirmation:"foobar")
+    b=User.create(name: "Mike",email:"mike@email.com",password:"foobar",password_confirmation:"foobar")
+    c=User.create(name: "Marco",email:"marco@email.com",password:"foobar",password_confirmation:"foobar")
+    d=User.create(name: "Anna",email:"anna@email.com",password:"foobar",password_confirmation:"foobar")
+    e=User.create(name: "Jack",email:"jack@email.com",password:"foobar",password_confirmation:"foobar")
+
+    a_f=Film.create(title:"Love in a nutshell",director:"Unknown",year:"2000")
+    b_f=Film.create(title:"In love",director:"Unknown",year:"2000")
+    c_f=Film.create(title:"Fun and stuff",director:"Unknown",year:"2000")
+    d_f=Film.create(title:"Fun,fun,fun",director:"Unknown",year:"2000")
+    e_f=Film.create(title:"Make me laugh",director:"Unknown",year:"2000")
+
+    Rating.create(film_id: a_f.id,user_id: a.id, value: 8)
+    Rating.create(film_id: b_f.id,user_id: a.id, value: 9)
+    Rating.create(film_id: c_f.id,user_id: a.id, value: 6)
+    Rating.create(film_id: e_f.id,user_id: a.id, value: 5)
+
+    Rating.create(film_id: a_f.id,user_id: b.id, value: 5)
+    Rating.create(film_id: c_f.id,user_id: b.id, value: 8)
+    Rating.create(film_id: d_f.id,user_id: b.id, value: 7)
+    Rating.create(film_id: e_f.id,user_id: b.id, value: 9)
+
+    Rating.create(film_id: a_f.id,user_id: c.id, value: 6)
+    Rating.create(film_id: b_f.id,user_id: c.id, value: 8)
+    Rating.create(film_id: c_f.id,user_id: c.id, value: 7)
+    Rating.create(film_id: d_f.id,user_id: c.id, value: 3)
+    Rating.create(film_id: e_f.id,user_id: c.id, value: 8)
+
+    Rating.create(film_id: b_f.id,user_id: d.id, value: 10)
+    Rating.create(film_id: c_f.id,user_id: d.id, value: 9)
+    Rating.create(film_id: d_f.id,user_id: d.id, value: 7)
+    Rating.create(film_id: e_f.id,user_id: d.id, value: 8)
+
+    Rating.create(film_id: a_f.id,user_id: e.id, value: 4)
+    Rating.create(film_id: b_f.id,user_id: e.id, value: 3)
+    Rating.create(film_id: c_f.id,user_id: e.id, value: 5)
+    Rating.create(film_id: d_f.id,user_id: e.id, value: 2)
+
+    redirect_to root_url
+  end
+
 end
 

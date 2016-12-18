@@ -11,7 +11,6 @@ class User < ActiveRecord::Base
   validates :base_predictor, presence: true
 
   has_many :preferences, foreign_key: "fan_id", dependent: :destroy
-  has_many :users_tags, foreign_key: "user_id", dependent: :destroy
   has_many :ratings, foreign_key: "user_id", dependent: :destroy
 
   scope :average_rating, ->(user_id) { joins("INNER JOIN ratings ON users.id = ratings.user_id AND ratings.user_id=" + user_id.to_s).average("value")}

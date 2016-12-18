@@ -4,6 +4,9 @@
 <div class="span2">
   <%= link_to '<button type="button" class="bt seleclarge btn-primary">Calculate and show</button>'.html_safe, calculate_and_show_results_path %>
   <%= link_to '<button type="button" class="bt seleclarge btn-primary">Show results!</button>'.html_safe, show_calculations_results_path %>
-  <%= link_to '<button type="button" class="bt seleclarge btn-primary">Recommend unrated films!</button>'.html_safe, recommended_films_path %>
+  <% if signed_in? %>
+    <%= link_to '<button type="button" class="bt seleclarge btn-primary">Recommend unrated films!</button>'.html_safe, recommended_films_path %>
+  <%end%>
+  <%= link_to '<button type="button" class="bt seleclarge btn-primary">Set 5x5 example</button>'.html_safe, create_5_5_example_path %>
 </div>
 <h2>Here is text that explaining to you stuff</h2>
