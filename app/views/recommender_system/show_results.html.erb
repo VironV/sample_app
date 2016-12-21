@@ -5,11 +5,12 @@
   <ol>
     <% 0.upto(@users.count-1) do |i| %>
         <li>
-          <%=@users[i]%>
+          <%=@users[i]%>:
           <%@user_vectors[i].each do |value| %>
               <%=Float(value).round(4)%>,
           <% end%>
         </li>
+
     <% end %>
   </ol>
 </div>
@@ -20,7 +21,7 @@
   <ol>
     <% 0.upto(@films.count-1) do |i| %>
         <li>
-          <%=@films[i]%>
+          <%=@films[i]%>:
           <%@film_vectors[i].each do |value| %>
               <%=Float(value).round(4)%>,
           <% end%>

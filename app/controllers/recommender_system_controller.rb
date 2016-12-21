@@ -54,10 +54,11 @@ class RecommenderSystemController < ApplicationController
 
   def show_results
     @users=[]
-
     @user_vectors=[]
+    @user_predictor=[]
     User.all.each do |user|
       @users.push(user.name)
+      @user_predictor.push(user.base_predictor)
       user_id=user.id
       vector=[]
       User_factor.where(user_id: user_id).find_each do |factor|
@@ -69,8 +70,10 @@ class RecommenderSystemController < ApplicationController
 
     @films=[]
     @film_vectors=[]
+    @film_predictor=[]
     Film.all.each do |film|
       @films.push(film.title)
+      @film_predictor.push(film.base_predictor)
       film_id=film.id
       vector=[]
       Film_factor.where(film_id: film_id).find_each do |factor|
@@ -96,6 +99,8 @@ class RecommenderSystemController < ApplicationController
   #
   #Main part
   #
+  #This fucntion calculates predicted rating using existing factors' and predictors' values,
+  #and returns that prediction
   def predict_rating(user,film)
     f_amount=SVD_param.find_by_name(@f_amoun_str).value.to_i
 
@@ -115,6 +120,7 @@ class RecommenderSystemController < ApplicationController
     return prediction
   end
 
+  #This function begins new learning cycle to get right factors and predcitors
   def first_full_learning()
     destoy_old_factors
     init_params
@@ -123,6 +129,7 @@ class RecommenderSystemController < ApplicationController
     set_default_users_factors(global_av)
     set_default_films_factors(global_av)
 
+    #getting learning process params
     max_iter=SVD_param.find_by_name(@max_iterations_str).value.to_i
     learn_rate=SVD_param.find_by_name(@learning_rate_str).value
     ratings_count=Rating.all.count
@@ -143,24 +150,29 @@ class RecommenderSystemController < ApplicationController
         user=User.find(rating.user_id)
         film=Film.find(rating.film_id)
 
+        #get prediction and calculate error
         predicted=predict_rating(user=user,film=film)
         error=rating.value-predicted
         rmse+=error*error
 
         log_write_rating_and_error(rating,error,learn_rate,predicted)
 
+        #update factors and predictors
         update_base_predictors(user,film,error,learn_rate,f_regulator)
         update_factors(user.id,film.id,learn_rate,error,f_regulator)
       end
 
+      #calculate rmse
       rmse=rmse/ratings_count
 
       log_write_rmse(rmse,rmse_old)
 
+      #if rmse changes by small amout - slow down learning rate
       if (rmse - rmse_old).abs < threshold
         learn_rate*=0.66
         threshold=threshold*0.5
       end
+      #if iterations count is too big - stop learning
       if iter_count > max_iter
         break
       end
@@ -176,6 +188,7 @@ class RecommenderSystemController < ApplicationController
   #
   #Learning shortcuts functions
   #
+  #This function gets error of prediction, and uses it for update predictors
   def update_base_predictors(user,film,error,learn_rate,f_regulator)
     mu=SVD_param.find_by_name(@global_predictor_str)
     mu.value=mu.value + error*learn_rate
@@ -186,6 +199,7 @@ class RecommenderSystemController < ApplicationController
     film.save
   end
 
+  #This function gets error of prediction, and uses it for update predictors
   def update_factors(user_id,film_id,learn_rate,error,f_regulator)
     Factor.all.each do |proto_factor|
       f_id=proto_factor.id
@@ -210,6 +224,7 @@ class RecommenderSystemController < ApplicationController
   #
   #Init part
   #
+  #This function preparing learning process params
   def init_params(learning_rate=0.1,f_regulator=0.015, f_amount=2, f_default=0.1,max_iterations=100)
     change_param(@learning_rate_str,learning_rate)
     change_param(@f_regulator_str,f_regulator)
@@ -220,6 +235,7 @@ class RecommenderSystemController < ApplicationController
     set_factors_amount(f_amount)
   end
 
+  #function to save params in database
   def change_param(name,value)
     param=SVD_param.find_by_name(name)
     if param==nil
@@ -234,6 +250,7 @@ class RecommenderSystemController < ApplicationController
     log_write_param(name,value,param)
   end
 
+  #function to set amount of factors
   def set_factors_amount(f_amount)
     amount_now=Factor.count
     if amount_now==f_amount
@@ -259,6 +276,7 @@ class RecommenderSystemController < ApplicationController
     end
   end
 
+  #clear all old factors
   def destoy_old_factors
     User_factor.all.each do |factor|
       factor.destroy
@@ -273,6 +291,7 @@ class RecommenderSystemController < ApplicationController
     end
   end
 
+  #set all user factors to default value
   def set_default_users_factors(global_av)
     User.update_all(:base_predictor => 0)
     User.all.each do |user|
@@ -286,6 +305,7 @@ class RecommenderSystemController < ApplicationController
     end
   end
 
+  #set all film factors to default value
   def set_default_films_factors(global_av)
     Film.update_all(:base_predictor => 0)
     count = 0
@@ -316,6 +336,7 @@ class RecommenderSystemController < ApplicationController
     return result
   end
 
+  #returns array of film factors
   def create_film_factor_vector(film_id)
     arr=[]
     Film_factor.where(film_id: film_id).find_each do |factor|
@@ -324,6 +345,7 @@ class RecommenderSystemController < ApplicationController
     return arr
   end
 
+  #returns array of user factors
   def create_user_factor_vector(user_id)
     arr=[]
     User_factor.where(user_id: user_id).find_each do |factor|
